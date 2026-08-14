@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Detection System </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="three.js"></script>
+
+    <link rel="stylesheet" href="two.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">🔍 Signature Detection System</h1>
+            <p class="text-lg text-gray-600"> Advanced Biometric Authentication</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Original Signature Section -->
+            <div class="upload-section from-white to-blue-50 border-blue-100">
+                <div class="section-header">
+                    <h2 class="title-blue">Original Signature</h2>
+                    <div class="status">
+                        <div class="status-dot bg-green-400"></div>
+                        <span class="status-text text-green-600">Authentic</span>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <div id="originalImageContainer" class="image-container border-blue-200 from-blue-50 to-indigo-50 hover:border-blue-400">
+                        <div id="originalPlaceholder" class="text-center">
+                            <div class="text-6xl mb-4 animate-bounce">📄</div>
+                            <p class="text-xl font-semibold text-blue-700 mb-2">Upload Original Signature</p>
+                            <p class="text-sm text-blue-500">Drag & drop or click to select</p>
+                        </div>
+                        <img id="originalImage" class="uploaded-image" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="mt-6 flex gap-3">
+                    <input type="file" id="originalFileInput" accept="image/*" style="display:none;" onchange="loadOriginalImage(event)">
+                    <button onclick="document.getElementById('originalFileInput').click()" class="btn-upload from-blue-500 to-blue-600">📁 Upload Image</button>
+                    <button onclick="clearOriginal()" class="btn-clear">Clear</button>
+                </div>
+            </div>
+
+            <!-- Duplicate Signature Section -->
+            <div class="upload-section from-white to-purple-50 border-purple-100">
+                <div class="section-header">
+                    <h2 class="title-purple">Duplicate Signature</h2>
+                    <div class="status">
+                        <div class="status-dot bg-yellow-400"></div>
+                        <span class="status-text text-yellow-600">Verification</span>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <div id="testImageContainer" class="image-container border-purple-200 from-purple-50 to-pink-50 hover:border-purple-400">
+                        <div id="testPlaceholder" class="text-center">
+                            <div class="text-6xl mb-4 animate-bounce">📝</div>
+                            <p class="text-xl font-semibold text-purple-700 mb-2">Upload Duplicate Signature</p>
+                            <p class="text-sm text-purple-500">Drag & drop or click to select</p>
+                        </div>
+                        <img id="testImage" class="uploaded-image" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="mt-6 flex gap-3">
+                    <input type="file" id="testFileInput" accept="image/*" style="display:none;" onchange="loadTestImage(event)">
+                    <button onclick="document.getElementById('testFileInput').click()" class="btn-upload from-purple-500 to-purple-600">📁 Upload Image</button>
+                    <button onclick="clearTest()" class="btn-clear">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analyze Button -->
+        <div class="mt-12 text-center">
+            <button onclick="analyzeSignature()" class="btn-analyze">🔍 Analyze Signatures</button>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="results-box">
+            <h2 class="results-title">🧠 AI Analysis Results</h2>
+            
+            <!-- Match Percentage -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xl font-semibold text-gray-700">Match Confidence</span>
+                    <span id="matchPercentage" class="match-percent">0%</span>
+                </div>
+                <div class="progress-bg">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Feature Scores -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card from-blue-50 to-blue-100 border-blue-200">
+                    <h3 class="feature-title text-blue-800">📏 Geometric Features</h3>
+                    <div id="geometricScore" class="feature-score text-blue-600">--</div>
+                    <p class="feature-desc text-blue-600">Aspect ratio, size, angles</p>
+                </div>
+                <div class="feature-card from-purple-50 to-purple-100 border-purple-200">
+                    <h3 class="feature-title text-purple-800">🌊 Dynamic Features</h3>
+                    <div id="dynamicScore" class="feature-score text-purple-600">--</div>
+                    <p class="feature-desc text-purple-600">Stroke patterns, velocity</p>
+                </div>
+                <div class="feature-card from-green-50 to-green-100 border-green-200">
+                    <h3 class="feature-title text-green-800">🎯 Statistical Match</h3>
+                    <div id="statisticalScore" class="feature-score text-green-600">--</div>
+                    <p class="feature-desc text-green-600">Correlation analysis</p>
+                </div>
+            </div>
+
+            <!-- Verification Result -->
+            <div id="verificationResult" class="verification-box">
+                <div class="text-8xl mb-6">🔍</div>
+                <h3 class="text-3xl font-bold text-gray-600 mb-3">Upload signatures to begin analysis</h3>
+                <p class="text-gray-500 text-lg">The system will compare geometric and dynamic features</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="three.js"></script>
+</body>
+</html>
